@@ -1,31 +1,9 @@
 package Accounts;
 
+import Accounts.Server.Bank;
+
+import java.sql.*;
 import java.util.Scanner;
-
-class Bank {
-    int balance = 0;
-
-    synchronized void withdraw(int amount) {
-        System.out.println("Withdrawal processing, please wait . . . ");
-        if(balance < amount) {
-            System.out.println("Unable to process, insufficient funds");
-            try {
-                wait();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            balance -= amount;
-            System.out.println("Withdrawal complete");
-        }
-    }
-
-    synchronized void deposit(int amount) {
-        System.out.println("Deposit processing, please wait . . . ");
-        balance += amount;
-        System.out.println("Deposit completed");
-        notify();
-    }
-}
 
 class WithdrawThread extends Thread {
     Bank bank;
@@ -36,7 +14,7 @@ class WithdrawThread extends Thread {
 
     @Override
     public void run() {
-        bank.withdraw(0);
+        bank.withdraw(bank.getBalance());
     }
 }
 
@@ -49,7 +27,7 @@ class BalanceThread extends Thread {
 
     @Override
     public void run() {
-        bank.deposit(0);
+        bank.deposit(bank.getBalance());
     }
 }
 
@@ -75,7 +53,7 @@ public class Main {
             Scanner menuScan = new Scanner(System.in);
             System.out.println();
             System.out.println("Please choose an option");
-            if (menuScan.hasNextInt()) ;
+            if (menuScan.hasNextInt());
             menuSelection = menuScan.nextInt();
 
             switch (menuSelection) {
@@ -96,7 +74,7 @@ public class Main {
                             //Check Balance
 
                             System.out.println("Check balance");
-                            System.out.println("Your balance is: " + bank.balance);
+                            System.out.println("Your balance is: " + bank.getBalance());
                             break;
                         case 2:
                             //Withdraw
@@ -107,9 +85,11 @@ public class Main {
                             int withdrawCheck = checkWithScanner.nextInt();
                             bank.withdraw(withdrawCheck);
                             System.out.println("You with withdrew $" + withdrawCheck);
-                            System.out.println();
+                            bank.setBalance( bank.getBalance() - withdrawCheck);
+                            System.out.println("Your new balance is: " + bank.getBalance());
 
                             //If there are no funds, it will not be able to restart
+
                             break;
                         case 3:
                             //Deposit
@@ -135,6 +115,10 @@ public class Main {
                     System.out.println("Saving");
                     break;
                 case 3:
+                    //Login
+
+                    System.out.println("Login");
+                case 9:
                     //Quit
 
                     break;
