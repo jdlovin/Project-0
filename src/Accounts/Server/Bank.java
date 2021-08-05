@@ -1,16 +1,17 @@
 package Accounts.Server;
 
 public class Bank {
+    private int balance;
+
+    //Get current balance
     public int getBalance() {
         return balance;
     }
 
+    //Set current balance
     public void setBalance(int balance) {
         this.balance = balance;
     }
-
-    private int balance;
-//    int balance = 0;
 
     public synchronized void withdraw(int amount) {
         System.out.println("Withdrawal processing, please wait . . . ");

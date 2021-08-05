@@ -2,7 +2,6 @@ package Accounts;
 
 import Accounts.Server.Bank;
 
-import java.sql.*;
 import java.util.Scanner;
 
 class WithdrawThread extends Thread {
@@ -36,13 +35,7 @@ public class Main {
         Bank bank = new Bank();
         int menuSelection = -1;
         while (menuSelection != 9) { //change this to a true statement
-//        System.out.println("  |||\\              ");
-//        System.out.println("  |//////               ");
-//        System.out.println("  |//   //             ");
-//        System.out.println("  |/////                ");
-//        System.out.println("  ||                ");
-//        System.out.println("  ||                   ");
-//        System.out.println("  ||                   ");
+
             System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
             System.out.println("Welcome to Prestige Worldwide!");
             System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
@@ -53,7 +46,7 @@ public class Main {
             Scanner menuScan = new Scanner(System.in);
             System.out.println();
             System.out.println("Please choose an option");
-            if (menuScan.hasNextInt());
+//            if (menuScan.hasNextInt());
             menuSelection = menuScan.nextInt();
 
             switch (menuSelection) {
@@ -69,7 +62,7 @@ public class Main {
                     System.out.println("3. Deposit");
                     System.out.println("4. Transfer");
                     menuSelection = checkingScanner.nextInt();
-                    switch(menuSelection) {
+                    switch (menuSelection) {
                         case 1:
                             //Check Balance
 
@@ -85,7 +78,7 @@ public class Main {
                             int withdrawCheck = checkWithScanner.nextInt();
                             bank.withdraw(withdrawCheck);
                             System.out.println("You with withdrew $" + withdrawCheck);
-                            bank.setBalance( bank.getBalance() - withdrawCheck);
+                            bank.setBalance(bank.getBalance() - withdrawCheck);
                             System.out.println("Your new balance is: " + bank.getBalance());
 
                             //If there are no funds, it will not be able to restart
