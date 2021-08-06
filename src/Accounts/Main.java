@@ -56,7 +56,7 @@ public class Main {
             Scanner menuScan = new Scanner(System.in);
             System.out.println();
             System.out.println("Please choose an option");
-            if (menuScan.hasNextInt());
+            if (menuScan.hasNextInt()) ;
             menuSelection = menuScan.nextInt();
 
             switch (menuSelection) {
@@ -121,30 +121,33 @@ public class Main {
                     System.out.println("1. Add Employee");
                     System.out.println("2. Update Employee");
                     System.out.println("3. Delete Employee");
+                    System.out.println("4. List of employees");
                     System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
                     System.out.print("Select an option:");
                     menuSelection = menuScan.nextInt();
+
                     //Employee creation
+
                     switch (menuSelection) {
                         case 1:
 
-                               //Add Employee
-                               System.out.print("First name: ");
-                               String firstName = menuScan.next();
-                               employee.setFirstName(firstName);
-                               System.out.print("Last name: ");
-                               String lastName = menuScan.next();
-                               employee.setLastName(lastName);
-                               System.out.print("Email: ");
-                               String email = menuScan.next();
-                               employee.setEmail(email);
-                               System.out.print("Username: ");
-                               String userName = menuScan.next();
-                               employee.setUserName(userName);
-                               System.out.print("Password: ");
-                               String passWord = menuScan.next();
-                               employee.setPassWord(passWord);
-                               dao.addEmployee(employee);
+                            //Add Employee
+                            System.out.print("First name: ");
+                            String firstName = menuScan.next();
+                            employee.setFirstName(firstName);
+                            System.out.print("Last name: ");
+                            String lastName = menuScan.next();
+                            employee.setLastName(lastName);
+                            System.out.print("Email: ");
+                            String email = menuScan.next();
+                            employee.setEmail(email);
+                            System.out.print("Username: ");
+                            String userName = menuScan.next();
+                            employee.setUserName(userName);
+                            System.out.print("Password: ");
+                            String passWord = menuScan.next();
+                            employee.setPassWord(passWord);
+                            dao.addEmployee(employee);
 
                             break;
                         case 2:
@@ -178,7 +181,12 @@ public class Main {
                             //Get a list of employees
 
                             System.out.println("List of employees");
-                            List<Employee>
+                            List<Employee> employees = dao.getEmployees();
+                            for (Employee employeeList : employees) {
+                                System.out.println(employeeList);
+                            }
+                            break;
+
                     }
                     break;
                 case 9:

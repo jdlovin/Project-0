@@ -8,7 +8,8 @@ public class Employee {
     private String userName;
     private String passWord;
 
-    public Employee(){
+    public Employee() {
+
     }
 
     public Employee(int id, String firstName, String lastName, String email, String userName, String passWord) {
@@ -19,6 +20,7 @@ public class Employee {
         this.userName = userName;
         this.passWord = passWord;
     }
+
 
     public int getId() {
         return id;
@@ -66,5 +68,10 @@ public class Employee {
 
     public void setPassWord(String passWord) {
         this.passWord = passWord;
+    }
+
+    @Override
+    public String toString() {
+        return "Employee { id: " + id + ", Name: " + firstName + " " + lastName + ", " + email + " }";
     }
 }

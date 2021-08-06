@@ -71,18 +71,31 @@ public class EmployeeDAOImpl implements EmployeeDAO {
         String sql = "select * from employee";
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery(sql);
-        while(resultSet.next()) {
+        while (resultSet.next()) {
             int id = resultSet.getInt(1);
             String firstName = resultSet.getString(2);
             String lastName = resultSet.getString(3);
-            Employee employee = new Employee(id, firstName, lastName);
+            String email = resultSet.getString(4);
+            Employee employee = new Employee(id, firstName, lastName, email, userName, passWord);
             employees.add(employee);
         }
-
+        return employees;
     }
 
     @Override
-    public Employee employeeById(int id) {
-        return null;
+    public Employee employeeById(int empId) throws SQLException {
+        Employee employee = new Employee();
+        String sql = "select * from employee where id = " + id;
+        ResultSet resultSet = statement.executeQuery(sql);
+        resultSet.next();
+        
+        if(resultSet == null) {
+            int id  = resultSet.getInt(1);
+            String firstName = resultSet.getString(2);
+            employee = new Employee(id, firstName, lastName, email, userName, passWord);
+        } else {
+            System.out.println("None found");
+        }
+        return employee;
     }
 }

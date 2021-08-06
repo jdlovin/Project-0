@@ -8,5 +8,5 @@ public interface EmployeeDAO {
     void updateEmployee(Employee employee) throws SQLException;
     void deleteEmployee(int id) throws SQLException;
     List<Employee> getEmployees() throws SQLException;
-    Employee employeeById(int id);
+    Employee employeeById(int id) throws SQLException;
 }
