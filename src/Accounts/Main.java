@@ -4,6 +4,9 @@ import Accounts.Server.Bank;
 import Accounts.Server.Employee;
 import Accounts.Server.EmployeeDAO;
 import Accounts.Server.EmployeeDOAFactory;
+import Accounts.Server.User.User;
+import Accounts.Server.User.UserDAO;
+import Accounts.Server.User.UserDAOFactory;
 
 import java.sql.SQLException;
 import java.sql.SQLOutput;
@@ -39,7 +42,9 @@ class BalanceThread extends Thread {
 public class Main {
     public static void main(String[] args) throws SQLException {
         EmployeeDAO dao = EmployeeDOAFactory.getEmployeeDao();
+        UserDAO userDAO = UserDAOFactory.getUserDao();
         Employee employee = new Employee();
+        User user = new User();
         Bank bank = new Bank();
 
         int menuSelection = -1;
@@ -52,6 +57,7 @@ public class Main {
             System.out.println("1. Checking");
             System.out.println("2. Saving");
             System.out.println("3. Employees");
+            System.out.println("4. Users");
             System.out.println("9. Exit");
             Scanner menuScan = new Scanner(System.in);
             System.out.println();
@@ -122,6 +128,7 @@ public class Main {
                     System.out.println("2. Update Employee");
                     System.out.println("3. Delete Employee");
                     System.out.println("4. List of employees");
+                    System.out.println("5. Find employee by ID #");
                     System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
                     System.out.print("Select an option:");
                     menuSelection = menuScan.nextInt();
@@ -186,9 +193,92 @@ public class Main {
                                 System.out.println(employeeList);
                             }
                             break;
-
+                        case 5:
+                            // Get an employee by their ID
+                            System.out.println("Employee search");
+                            System.out.println();
+                            System.out.print("Enter employee ID: ");
+                            int empId = menuScan.nextInt();
+                            Employee employeeById = dao.employeeById(empId);
+                            System.out.println(employeeById.toString());
+                            break;
                     }
                     break;
+                case 4:
+                    //Users
+
+                    System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+                    System.out.println("User Menu");
+                    System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+                    System.out.println("1. Add User");
+                    System.out.println("2. Update User");
+                    System.out.println("3. Delete User");
+                    System.out.println("4. List of Users");
+                    System.out.println("5. Find User by ID #");
+                    System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+                    System.out.print("Select an option:");
+                    menuSelection = menuScan.nextInt();
+
+                    switch (menuSelection) {
+                        case 1:
+                            //Add User
+
+                            System.out.print("First name: ");
+                            String firstName = menuScan.next();
+                            user.setFirstName(firstName);
+                            System.out.print("Last name: ");
+                            String lastName = menuScan.next();
+                            user.setLastName(lastName);
+                            System.out.print("Email: ");
+                            String email = menuScan.next();
+                            user.setEmail(email);
+                            System.out.print("Username: ");
+                            String userName = menuScan.next();
+                            user.setUserName(userName);
+                            System.out.print("Password: ");
+                            String passWord = menuScan.next();
+                            user.setPassWord(passWord);
+                            userDAO.addUser(user);
+                            break;
+                        case 2:
+                            //Update User
+
+                            System.out.print("First name: ");
+                            String newFirstName = menuScan.next();
+                            user.setFirstName(newFirstName);
+                            System.out.print("Last name: ");
+                            String newLastName = menuScan.next();
+                            user.setLastName(newLastName);
+                            System.out.print("Email: ");
+                            String newEmail = menuScan.next();
+                            user.setEmail(newEmail);
+                            System.out.print("Username: ");
+                            String newUserName = menuScan.next();
+                            user.setUserName(newUserName);
+                            System.out.print("Password: ");
+                            String newPassWord = menuScan.next();
+                            user.setPassWord(newPassWord);
+                            userDAO.updateUser(user);
+                            break;
+                        case 3:
+                            //Delete User
+                            System.out.println("Had a bad line of credit");
+                            System.out.println("Delete User");
+                            int deleteId = menuScan.nextInt();
+                            user.setId(deleteId);
+                            userDAO.deleteUser(user.getId());
+                            break;
+                        case 4:
+                            //List of users
+                            System.out.println("I wanna see all of their bank accounts");
+                            break;
+                        case 5:
+                            //User by specified ID
+                            System.out.println("Pick number 3 my lord");
+                            break;
+                    }
+                    break;
+
                 case 9:
                     //Quit
 

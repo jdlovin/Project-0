@@ -6,7 +6,7 @@ import java.util.List;
 
 public class EmployeeDAOImpl implements EmployeeDAO {
 
-    private static Statement statement = null;
+    private static final Statement statement = null;
     Connection connection = null;
 
     public EmployeeDAOImpl() {
@@ -19,8 +19,6 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 
     @Override
     public void addEmployee(Employee employee) throws SQLException {
-
-        //Add fields that you defined - DONE
 
         String sql = "insert into employee (firstName, lastName, email, userName, passWord) values (?,?,?,?,?)";
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -76,22 +74,34 @@ public class EmployeeDAOImpl implements EmployeeDAO {
             String firstName = resultSet.getString(2);
             String lastName = resultSet.getString(3);
             String email = resultSet.getString(4);
+            String userName = resultSet.getString(5);
+            String passWord = resultSet.getString(6);
             Employee employee = new Employee(id, firstName, lastName, email, userName, passWord);
             employees.add(employee);
         }
         return employees;
     }
 
+    /*
+    Always returning false statement
+    Fix when there is a chance
+     */
+
     @Override
     public Employee employeeById(int empId) throws SQLException {
         Employee employee = new Employee();
-        String sql = "select * from employee where id = " + id;
+        String sql = "select * from employee where id = " + empId;
+        Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery(sql);
         resultSet.next();
-        
+
         if(resultSet == null) {
             int id  = resultSet.getInt(1);
             String firstName = resultSet.getString(2);
+            String lastName = resultSet.getString(3);
+            String email = resultSet.getString(4);
+            String userName = resultSet.getString(5);
+            String passWord = resultSet.getString(6);
             employee = new Employee(id, firstName, lastName, email, userName, passWord);
         } else {
             System.out.println("None found");
