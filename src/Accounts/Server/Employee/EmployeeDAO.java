@@ -1,4 +1,4 @@
-package Accounts.Server;
+package Accounts.Server.Employee;
 
 import java.sql.SQLException;
 import java.util.List;

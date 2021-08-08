@@ -68,4 +68,9 @@ public class User {
     public void setPassWord(String passWord) {
         this.passWord = passWord;
     }
+
+    @Override
+    public String toString() {
+        return "User: { id: " + id + ", Name: " + firstName + " " + lastName + ", " + email + " }";
+    }
 }

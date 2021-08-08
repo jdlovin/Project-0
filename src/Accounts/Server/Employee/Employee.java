@@ -1,4 +1,4 @@
-package Accounts.Server;
+package Accounts.Server.Employee;
 
 public class Employee {
     private int id;

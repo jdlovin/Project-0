@@ -34,3 +34,30 @@ public class Bank {
         notify();
     }
 }
+
+class WithdrawThread extends Thread {
+    Bank bank;
+
+    public WithdrawThread(Bank bank) {
+        this.bank = bank;
+    }
+
+    @Override
+    public void run() {
+        bank.withdraw(bank.getBalance());
+    }
+}
+
+class BalanceThread extends Thread {
+    Bank bank;
+
+    public BalanceThread(Bank bank) {
+        this.bank = bank;
+    }
+
+    @Override
+    public void run() {
+        bank.deposit(bank.getBalance());
+    }
+}
+

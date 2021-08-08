@@ -1,51 +1,28 @@
 package Accounts;
 
-import Accounts.Server.Bank;
-import Accounts.Server.Employee;
-import Accounts.Server.EmployeeDAO;
-import Accounts.Server.EmployeeDOAFactory;
+import Accounts.Server.Account.Account;
+import Accounts.Server.Account.AccountDAOFactory;
+import Accounts.Server.Account.AccountsDAO;
+import Accounts.Server.Employee.Employee;
+import Accounts.Server.Employee.EmployeeDAO;
+import Accounts.Server.Employee.EmployeeDOAFactory;
 import Accounts.Server.User.User;
 import Accounts.Server.User.UserDAO;
 import Accounts.Server.User.UserDAOFactory;
 
 import java.sql.SQLException;
-import java.sql.SQLOutput;
 import java.util.List;
 import java.util.Scanner;
 
-class WithdrawThread extends Thread {
-    Bank bank;
-
-    public WithdrawThread(Bank bank) {
-        this.bank = bank;
-    }
-
-    @Override
-    public void run() {
-        bank.withdraw(bank.getBalance());
-    }
-}
-
-class BalanceThread extends Thread {
-    Bank bank;
-
-    public BalanceThread(Bank bank) {
-        this.bank = bank;
-    }
-
-    @Override
-    public void run() {
-        bank.deposit(bank.getBalance());
-    }
-}
 
 public class Main {
     public static void main(String[] args) throws SQLException {
+        AccountsDAO accountsDAO = AccountDAOFactory.getAccountDao();
         EmployeeDAO dao = EmployeeDOAFactory.getEmployeeDao();
         UserDAO userDAO = UserDAOFactory.getUserDao();
         Employee employee = new Employee();
         User user = new User();
-        Bank bank = new Bank();
+        Account account = new Account();
 
         int menuSelection = -1;
         while (menuSelection != 9) { //change this to a true statement
@@ -81,8 +58,7 @@ public class Main {
                         case 1:
                             //Check Balance
 
-                            System.out.println("Check balance");
-                            System.out.println("Your balance is: " + bank.getBalance());
+
                             break;
                         case 2:
                             //Withdraw
@@ -90,23 +66,48 @@ public class Main {
                             System.out.println("Withdraw");
                             System.out.println("How much would you like to withdraw?");
                             int withdrawCheck = menuScan.nextInt();
-                            bank.withdraw(withdrawCheck);
+                            System.out.print("Which account number is this?");
+                            int checkWithID = menuScan.nextInt();
+                            account.setId(checkWithID);
+                            account.withdraw(withdrawCheck);
+                            accountsDAO.withdrawAccount(account);
                             System.out.println("You with withdrew $" + withdrawCheck);
-                            bank.setBalance(bank.getBalance() - withdrawCheck);
-                            System.out.println("Your new balance is: " + bank.getBalance());
 
-                            //If there are no funds, it will not be able to restart
 
                             break;
                         case 3:
                             //Deposit
 
                             System.out.println("Deposit");
-                            System.out.println("How much would you like to deposit?");
+                            System.out.print("How much would you like to deposit?");
                             int depositCheck = menuScan.nextInt();
-                            bank.deposit(depositCheck);
+                            System.out.print("Which account number is this?");
+                            int checkDepId = menuScan.nextInt();
+                            account.setId(checkDepId);
+                            account.deposit(depositCheck);
+                            accountsDAO.depositAccount(account);
                             System.out.println("You deposited $" + depositCheck);
                             System.out.println();
+
+
+//
+//                            System.out.println("Update employee");
+//                            System.out.print("First name: ");
+//                            String newFirstName = menuScan.next();
+//                            employee.setFirstName(newFirstName);
+//                            System.out.print("Last name: ");
+//                            String newLastName = menuScan.next();
+//                            employee.setLastName(newLastName);
+//                            System.out.print("Email: ");
+//                            String newEmail = menuScan.next();
+//                            employee.setEmail(newEmail);
+//                            System.out.print("Password: ");
+//                            String newPassWord = menuScan.next();
+//                            employee.setPassWord(newPassWord);
+//                            System.out.print("ID: ");
+//                            int id = menuScan.nextInt();
+//                            employee.setId(id);
+//                            dao.updateEmployee(employee);
                             break;
                         case 4:
                             //Transfer
@@ -258,6 +259,10 @@ public class Main {
                             System.out.print("Password: ");
                             String newPassWord = menuScan.next();
                             user.setPassWord(newPassWord);
+
+                            System.out.print("ID: ");
+                            int id = menuScan.nextInt();
+                            user.setId(id);
                             userDAO.updateUser(user);
                             break;
                         case 3:
@@ -271,10 +276,16 @@ public class Main {
                         case 4:
                             //List of users
                             System.out.println("I wanna see all of their bank accounts");
+                            System.out.println("List of users");
+                            List<User> users = userDAO.getUsers();
+                            for (User userList : users) {
+                                System.out.println(userList);
+                            }
                             break;
                         case 5:
                             //User by specified ID
                             System.out.println("Pick number 3 my lord");
+
                             break;
                     }
                     break;
