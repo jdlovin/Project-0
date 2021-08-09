@@ -1,6 +1,7 @@
 package Accounts.Server.User;
 
 import Accounts.Server.ConnectionFactory;
+import com.mysql.cj.protocol.Resultset;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -84,7 +85,21 @@ public class UserDAOImpl implements UserDAO{
     }
 
     @Override
-    public User userById(int id) {
-        return null;
+    public User userById(int userId) throws SQLException {
+        User user = new User();
+        String sql = "select * from users where id = " + userId;
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery(sql);
+        resultSet.next();
+
+        if(resultSet == null) {
+            int id = resultSet.getInt(1);
+            String firstName = resultSet.getString(2);
+            String lastName = resultSet.getString(3);
+            user = new User(id, firstName, lastName);
+        } else {
+            System.out.println("None found");
+        }
+        return user;
     }
 }

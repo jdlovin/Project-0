@@ -21,6 +21,9 @@ public class User {
         this.passWord = passWord;
     }
 
+    public User(int id, String firstName, String lastName) {
+    }
+
     public int getId() {
         return id;
     }

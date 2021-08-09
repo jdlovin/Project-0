@@ -8,5 +8,5 @@ public interface UserDAO {
     void updateUser(User user) throws SQLException;
     void deleteUser(int id) throws SQLException;
     List<User> getUsers() throws SQLException;
-    User userById(int id);
+    User userById(int id) throws SQLException;
 }

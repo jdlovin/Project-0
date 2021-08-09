@@ -19,6 +19,9 @@ public class Account {
         this.id = id;
     }
 
+    public Account(int balance) {
+    }
+
     public int getAccount_number() {
         return account_number;
     }

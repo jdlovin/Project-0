@@ -96,18 +96,18 @@ public class EmployeeDAOImpl implements EmployeeDAO {
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery(sql);
         resultSet.next();
-//
-//        if(resultSet == empId) {
-//            int id  = resultSet.getInt(1);
-//            String firstName = resultSet.getString(2);
-//            String lastName = resultSet.getString(3);
-//            String email = resultSet.getString(4);
-//            String userName = resultSet.getString(5);
-//            String passWord = resultSet.getString(6);
-//            employee = new Employee(id, firstName, lastName, email, userName, passWord);
-//        } else {
-//            System.out.println("None found");
-//        }
+
+        if(resultSet.next()) {
+            int id  = resultSet.getInt(1);
+            String firstName = resultSet.getString(2);
+            String lastName = resultSet.getString(3);
+            String email = resultSet.getString(4);
+            String userName = resultSet.getString(5);
+            String passWord = resultSet.getString(6);
+            employee = new Employee(id, firstName, lastName, email, userName, passWord);
+        } else {
+            System.out.println("None found");
+        }
         return employee;
     }
 }

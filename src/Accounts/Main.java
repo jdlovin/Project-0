@@ -64,12 +64,13 @@ public class Main {
                             //Withdraw
 
                             System.out.println("Withdraw");
-                            System.out.println("How much would you like to withdraw?");
+                            System.out.print("How much would you like to withdraw?");
                             int withdrawCheck = menuScan.nextInt();
                             System.out.print("Which account number is this?");
                             int checkWithID = menuScan.nextInt();
                             account.setId(checkWithID);
-                            account.withdraw(withdrawCheck);
+                            account.withdraw(account.getBalance() - withdrawCheck);
+                            account.setBalance(withdrawCheck);
                             accountsDAO.withdrawAccount(account);
                             System.out.println("You with withdrew $" + withdrawCheck);
 
@@ -89,25 +90,6 @@ public class Main {
                             System.out.println("You deposited $" + depositCheck);
                             System.out.println();
 
-
-//
-//                            System.out.println("Update employee");
-//                            System.out.print("First name: ");
-//                            String newFirstName = menuScan.next();
-//                            employee.setFirstName(newFirstName);
-//                            System.out.print("Last name: ");
-//                            String newLastName = menuScan.next();
-//                            employee.setLastName(newLastName);
-//                            System.out.print("Email: ");
-//                            String newEmail = menuScan.next();
-//                            employee.setEmail(newEmail);
-//                            System.out.print("Password: ");
-//                            String newPassWord = menuScan.next();
-//                            employee.setPassWord(newPassWord);
-//                            System.out.print("ID: ");
-//                            int id = menuScan.nextInt();
-//                            employee.setId(id);
-//                            dao.updateEmployee(employee);
                             break;
                         case 4:
                             //Transfer
@@ -201,7 +183,11 @@ public class Main {
                             System.out.print("Enter employee ID: ");
                             int empId = menuScan.nextInt();
                             Employee employeeById = dao.employeeById(empId);
-                            System.out.println(employeeById.toString());
+                            System.out.println(employeeById);
+                            break;
+                        case 6:
+                            System.out.println("List of user accounts");
+                            accountsDAO.getAccounts(account);
                             break;
                     }
                     break;
@@ -275,7 +261,7 @@ public class Main {
                             break;
                         case 4:
                             //List of users
-                            System.out.println("I wanna see all of their bank accounts");
+
                             System.out.println("List of users");
                             List<User> users = userDAO.getUsers();
                             for (User userList : users) {
@@ -285,6 +271,9 @@ public class Main {
                         case 5:
                             //User by specified ID
                             System.out.println("Pick number 3 my lord");
+                            int userId = menuScan.nextInt();
+                            User userById = userDAO.userById(userId);
+                            System.out.println(userById);
 
                             break;
                     }

@@ -3,7 +3,6 @@ package Accounts.Server.Account;
 import Accounts.Server.ConnectionFactory;
 
 import java.sql.*;
-import java.util.List;
 
 public class AccountsDAOImpl implements AccountsDAO {
 
@@ -34,10 +33,20 @@ public class AccountsDAOImpl implements AccountsDAO {
             System.out.println("Oh no! Something happened");
     }
 
+//    @Override
+//    public void checkAccount(Account account) throws SQLException {
+////        String sql = "select balance from accounts where id = ?";
+////        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+////        preparedStatement.setInt(1, account.getId());
+////        ResultSet count = preparedStatement.executeQuery();
+////        return account;
+//    }
+
     @Override
     public void depositAccount(Account account) throws SQLException {
         String sql = "update accounts set balance = balance + ? where id = ?";
         String sql2 = "commit";
+        BalanceThread balanceThread = new BalanceThread(account);
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         preparedStatement.setInt(1, account.getBalance());
         preparedStatement.setInt(2, account.getId());
@@ -71,21 +80,24 @@ public class AccountsDAOImpl implements AccountsDAO {
     }
 
     @Override
-    public List<Account> getAccounts() {
+    public void getAccounts(Account account) throws SQLException {
 
-
-        return null;
     }
 
     @Override
-    public Account accountByID(int id) throws SQLException {
-        Account account = new Account();
-        String sql = "select * from accounts where id = " + id;
-        Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery(sql);
-        resultSet.next();
+    public void getAccounts() throws SQLException {
 
+    }
 
-        return null;
+    @Override
+    public void accountByID(Account account) throws SQLException {
+        String sql = "select balance from accounts where id = ?";
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        preparedStatement.setInt(1, account.getId());
+        ResultSet count = preparedStatement.executeQuery();
+//        if (count > 0)
+//            System.out.println("Your balance");
+//        else
+//            System.out.println("Something happened");
     }
 }
