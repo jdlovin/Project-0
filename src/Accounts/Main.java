@@ -31,7 +31,7 @@ public class Main {
             System.out.println("Welcome to Prestige Worldwide!");
             System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
             System.out.println("What would you like to do today?");
-            System.out.println("1. Checking");
+            System.out.println("1. Register");
             System.out.println("2. Saving");
             System.out.println("3. Employees");
             System.out.println("4. Users");
@@ -39,90 +39,64 @@ public class Main {
             Scanner menuScan = new Scanner(System.in);
             System.out.println();
             System.out.println("Please choose an option");
-            if (menuScan.hasNextInt()) ;
+            if (menuScan.hasNextInt());
             menuSelection = menuScan.nextInt();
 
             switch (menuSelection) {
                 case 1:
-                    // Checking
+                    // Register
 
-                    System.out.println("Checking");
+                    System.out.println("Register");
                     System.out.println();
                     System.out.println("What would you like to do?");
-                    System.out.println("1. Check Balance");
-                    System.out.println("2. Withdraw");
-                    System.out.println("3. Deposit");
-                    System.out.println("4. Transfer");
+                    System.out.println("1. Create user account");
+                    System.out.println("2. Create another bank account");
                     menuSelection = menuScan.nextInt();
                     switch (menuSelection) {
                         case 1:
-                            //Check Balance
-                            System.out.println("Account balance");
-                            System.out.println();
-                            System.out.print("Enter account ID: ");
-                            int accountId = menuScan.nextInt();
-                            Account accountById = accountsDAO.accountByID(accountId);
-                            System.out.println(accountById);
+                            //Add User
 
+                            System.out.print("First name: ");
+                            String firstName = menuScan.next();
+                            user.setFirstName(firstName);
+                            System.out.print("Last name: ");
+                            String lastName = menuScan.next();
+                            user.setLastName(lastName);
+                            System.out.print("Email: ");
+                            String email = menuScan.next();
+                            user.setEmail(email);
+                            System.out.print("Username: ");
+                            String userName = menuScan.next();
+                            user.setUserName(userName);
+                            System.out.print("Password: ");
+                            String passWord = menuScan.next();
+                            user.setPassWord(passWord);
+                            userDAO.addUser(user);
                             break;
                         case 2:
-                            //Withdraw
-
-                            //Is adding to memory and subtracting from the DB
-
-                            System.out.println("Withdraw");
-                            System.out.print("How much would you like to withdraw?");
-                            int withdrawCheck = menuScan.nextInt();
-                            System.out.print("Which account number is this?");
-                            int checkWithID = menuScan.nextInt();
-                            account.setId(checkWithID);
-                            account.withdraw(account.getBalance() - withdrawCheck);
-                            account.setBalance(withdrawCheck);
-                            accountsDAO.withdrawAccount(account);
-                            System.out.println("You with withdrew $" + withdrawCheck);
-
-
-                            break;
-                        case 3:
-                            //Deposit
-
-                            System.out.println("Deposit");
-                            System.out.print("How much would you like to deposit?");
-                            int depositCheck = menuScan.nextInt();
-                            System.out.print("Which account number is this?");
-                            int checkDepId = menuScan.nextInt();
-                            account.setId(checkDepId);
-                            account.deposit(depositCheck);
-                            accountsDAO.depositAccount(account);
-                            System.out.println("You deposited $" + depositCheck);
+                           //Add a bank account - just add minimum balance exception
+                            System.out.print("Create a bank account");
                             System.out.println();
+                            System.out.print("What is your user id?");
+                            int userId =menuScan.nextInt();
+                            user.setId(userId);
+                            System.out.print("How much do you want to deposit into the account?");
+                            int newAccountBalance = menuScan.nextInt();
+                            //new account goes here
+                            account.setBalance(newAccountBalance);
+                            String pendingStatus = "Y";
+                            account.setPendingAccount(pendingStatus);
+                            account.setId(userId);
+                            user.setChecking_account_number(userId);
+                            accountsDAO.addAccount(account);
+                            userDAO.addCheckingAccount(user);
+                            System.out.println("Pending status");
+
+
+
 
                             break;
-                        case 4:
-                            //Transfer
-                            System.out.println("Withdraw");
-                            System.out.print("How much would you like to transfer?");
-                            int transferCheck = menuScan.nextInt();
-                            System.out.print("Which account number are you transferring from?");
-                            int transferWithID = menuScan.nextInt();
-                            account.setId(transferWithID);
-//                            account.withdraw(account.getBalance() - transferCheck);
-                            account.setBalance(transferCheck);
-                            accountsDAO.withdrawAccount(account);
-                            System.out.println("You with withdrew $" + transferCheck);
-                            //Start deposit
 
-                            System.out.print("Which account number is this transferring to?");
-                            int transferToId = menuScan.nextInt();
-                            account.setId(transferToId);
-//                            account.deposit(transferCheck);
-                            account.setBalance(transferCheck);
-                            accountsDAO.depositAccount(account);
-                            System.out.println("You deposited $" + transferCheck);
-                            System.out.println();
-
-                            System.out.println("Transfer");
-                            break;
                     }
                     break;
                 case 2:
@@ -136,10 +110,11 @@ public class Main {
                     System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
                     System.out.println("1. Add Employee");
                     System.out.println("2. Update Employee");
-                    System.out.println("3. Delete Employee");
-                    System.out.println("4. List of employees");
-                    System.out.println("5. Find employee by ID #");
-                    System.out.println("6. List of user accounts");
+                    System.out.println("3. List of employees");
+                    System.out.println("4. Find employee by ID #");
+                    System.out.println("5. List of user accounts");
+                    System.out.println("6. Delete a user");
+                    System.out.println("7. List of users");
                     System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
                     System.out.print("Select an option:");
                     menuSelection = menuScan.nextInt();
@@ -189,13 +164,6 @@ public class Main {
                             dao.updateEmployee(employee);
                             break;
                         case 3:
-                            //Delete Employee
-                            System.out.println("Delete employee");
-                            int deleteId = menuScan.nextInt();
-                            employee.setId(deleteId);
-                            dao.deleteEmployee(employee.getId());
-                            break;
-                        case 4:
                             //Get a list of employees
 
                             System.out.println("List of employees");
@@ -204,7 +172,7 @@ public class Main {
                                 System.out.println(employeeList);
                             }
                             break;
-                        case 5:
+                        case 4:
                             // Get an employee by their ID
 
                             System.out.println("Employee search");
@@ -214,8 +182,8 @@ public class Main {
                             Employee employeeById = dao.employeeById(empId);
                             System.out.println(employeeById);
                             break;
-                        case 6:
-                            //Gets a list of accounts
+                        case 5:
+                            //Gets a list of user accounts
 
                             System.out.println("List of user accounts");
                             List<Account> accounts = accountsDAO.getAccounts();
@@ -223,6 +191,26 @@ public class Main {
                                 System.out.println(accountList);
                             }
                             break;
+                        case 6:
+                            //delete user
+                            System.out.println("Had a bad line of credit");
+                            System.out.println("Delete User");
+                            int deleteUserId = menuScan.nextInt();
+                            user.setId(deleteUserId);
+                            userDAO.deleteUser(user.getId());
+                            break;
+                        case 7:
+                            //List of users
+
+                            System.out.println("List of users");
+                            List<User> users = userDAO.getUsers();
+                            for (User userList : users) {
+                                System.out.println(userList);
+                            }
+                            break;
+                        case 8:
+                            //List of accounts that are pending
+                            
                     }
                     break;
                 case 4:
@@ -233,9 +221,7 @@ public class Main {
                     System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
                     System.out.println("1. Add User");
                     System.out.println("2. Update User");
-                    System.out.println("3. Delete User");
-                    System.out.println("4. List of Users");
-                    System.out.println("5. Find User by ID #");
+                    System.out.println("3. Login");
                     System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
                     System.out.print("Select an option:");
                     menuSelection = menuScan.nextInt();
@@ -286,30 +272,7 @@ public class Main {
                             userDAO.updateUser(user);
                             break;
                         case 3:
-                            //Delete User
-                            System.out.println("Had a bad line of credit");
-                            System.out.println("Delete User");
-                            int deleteId = menuScan.nextInt();
-                            user.setId(deleteId);
-                            userDAO.deleteUser(user.getId());
-                            break;
-                        case 4:
-                            //List of users
-
-                            System.out.println("List of users");
-                            List<User> users = userDAO.getUsers();
-                            for (User userList : users) {
-                                System.out.println(userList);
-                            }
-                            break;
-                        case 5:
-                            //User by specified ID
-                            System.out.println("Pick number 3 my lord");
-                            int userId = menuScan.nextInt();
-                            User userById = userDAO.userById(userId);
-                            System.out.println(userById);
-
-                            break;
+                            //Login
                     }
                     break;
 
@@ -321,3 +284,67 @@ public class Main {
         }
     }
 }
+//
+//// Checking
+//
+//                    System.out.println("Checking");
+//                            System.out.println();
+//                            System.out.println("What would you like to do?");
+//                            System.out.println("1. Check Balance");
+//                            System.out.println("2. Withdraw");
+//                            System.out.println("3. Deposit");
+//                            System.out.println("4. Transfer");
+//                            menuSelection = menuScan.nextInt();
+
+// //Withdraw
+//
+//                            //Is adding to memory and subtracting from the DB
+//
+//                            System.out.println("Withdraw");
+//                            System.out.print("How much would you like to withdraw?");
+//                            int withdrawCheck = menuScan.nextInt();
+//                            System.out.print("Which account number is this?");
+//                            int checkWithID = menuScan.nextInt();
+//                            account.setId(checkWithID);
+//                            account.withdraw(account.getBalance() - withdrawCheck);
+//                            account.setBalance(withdrawCheck);
+//                            accountsDAO.withdrawAccount(account);
+//                            System.out.println("You with withdrew $" + withdrawCheck);
+//
+
+//    //Deposit
+//
+//                            System.out.println("Deposit");
+//                            System.out.print("How much would you like to deposit?");
+//                            int depositCheck = menuScan.nextInt();
+//                            System.out.print("Which account number is this?");
+//                            int checkDepId = menuScan.nextInt();
+//                            account.setId(checkDepId);
+//                            account.deposit(depositCheck);
+//                            accountsDAO.depositAccount(account);
+//                            System.out.println("You deposited $" + depositCheck);
+//                            System.out.println();
+
+// //Transfer
+//                            System.out.println("Withdraw");
+//                            System.out.print("How much would you like to transfer?");
+//                            int transferCheck = menuScan.nextInt();
+//                            System.out.print("Which account number are you transferring from?");
+//                            int transferWithID = menuScan.nextInt();
+//                            account.setId(transferWithID);
+////                            account.withdraw(account.getBalance() - transferCheck);
+//                            account.setBalance(transferCheck);
+//                            accountsDAO.withdrawAccount(account);
+//                            System.out.println("You with withdrew $" + transferCheck);
+//                            //Start deposit
+//
+//                            System.out.print("Which account number is this transferring to?");
+//                            int transferToId = menuScan.nextInt();
+//                            account.setId(transferToId);
+////                            account.deposit(transferCheck);
+//                            account.setBalance(transferCheck);
+//                            accountsDAO.depositAccount(account);
+//                            System.out.println("You deposited $" + transferCheck);
+//                            System.out.println();
+//
+//                            System.out.println("Transfer");

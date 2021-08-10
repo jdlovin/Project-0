@@ -7,16 +7,18 @@ public class Account {
     private int balance;
     private int opening_balance;
     private int id;
+    private String pendingAccount;
 
     public Account() {
 
     }
 
-    public Account(int account_number, int balance, int opening_balance, int id) {
+    public Account(int account_number, int balance, int opening_balance, int id, String pendingAccount) {
         this.account_number = account_number;
         this.balance = balance;
         this.opening_balance = opening_balance;
         this.id = id;
+        this.pendingAccount = pendingAccount;
     }
 
     public Account(int balance) {
@@ -79,6 +81,14 @@ public class Account {
         balance += amount;
         System.out.println("Deposit completed");
         notify();
+    }
+
+    public String getPendingAccount() {
+        return pendingAccount;
+    }
+
+    public void setPendingAccount(String pendingAccount) {
+        this.pendingAccount = pendingAccount;
     }
 }
 

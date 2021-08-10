@@ -7,18 +7,20 @@ public class User {
     private String email;
     private String userName;
     private String passWord;
+    private int checking_account_number;
 
     public User() {
 
     }
 
-    public User(int id, String firstName, String lastName, String email, String userName, String passWord) {
+    public User(int id, String firstName, String lastName, String email, String userName, String passWord, int checking_account_number) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.userName = userName;
         this.passWord = passWord;
+        this.checking_account_number = checking_account_number;
     }
 
     public int getId() {
@@ -72,5 +74,13 @@ public class User {
     @Override
     public String toString() {
         return "User: { id: " + id + ", Name: " + firstName + " " + lastName + ", Email: " + email + " }";
+    }
+
+    public int getChecking_account_number() {
+        return checking_account_number;
+    }
+
+    public void setChecking_account_number(int checking_account_number) {
+        this.checking_account_number = checking_account_number;
     }
 }

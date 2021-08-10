@@ -66,6 +66,17 @@ public class UserDAOImpl implements UserDAO{
     }
 
     @Override
+    public void addCheckingAccount(User user) throws SQLException {
+        String sql = "update users set checking_account_number = ? where id = ?";
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        preparedStatement.setInt(1,user.getChecking_account_number());
+        preparedStatement.setInt(2,user.getId());
+        int count = preparedStatement.executeUpdate();
+        if (count > 0)
+            System.out.println("Checking account added");
+    }
+
+    @Override
     public List<User> getUsers() throws SQLException {
         List<User> users = new ArrayList<>();
         String sql = "select * from users";
@@ -78,7 +89,8 @@ public class UserDAOImpl implements UserDAO{
             String email = resultSet.getString(4);
             String userName = resultSet.getString(5);
             String passWord = resultSet.getString(6);
-            User user = new User(id, firstName, lastName, email, userName, passWord);
+            int checking_account_number = resultSet.getInt(7);
+            User user = new User(id, firstName, lastName, email, userName, passWord, checking_account_number);
             users.add(user);
         }
         return users;
@@ -98,7 +110,8 @@ public class UserDAOImpl implements UserDAO{
             String email = resultSet.getString(4);
             String userName = resultSet.getString(5);
             String passWord = resultSet.getString(6);
-            user = new User(id, firstName, lastName, email, userName, passWord);
+            int checking_account_number = resultSet.getInt(7);
+            user = new User(id, firstName, lastName, email, userName, passWord, checking_account_number);
         } else {
             System.out.println("None found");
         }

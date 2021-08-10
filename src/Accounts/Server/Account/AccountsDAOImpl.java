@@ -22,12 +22,11 @@ public class AccountsDAOImpl implements AccountsDAO {
 
     @Override
     public void addAccount(Account account) throws SQLException {
-        String sql = "insert into accounts (account_number, balance, opening_balance, id) values (?,?,?,?)";
+        String sql = "insert into accounts (balance, id, pendingAccount) values (?,?,?)";
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        preparedStatement.setInt(1, account.getAccount_number());
-        preparedStatement.setInt(2, account.getBalance());
-        preparedStatement.setInt(3, account.getOpening_balance());
-        preparedStatement.setInt(4, account.getId());
+        preparedStatement.setInt(1, account.getBalance());
+        preparedStatement.setInt(2, account.getId());
+        preparedStatement.setString(3, account.getPendingAccount());
         int count = preparedStatement.executeUpdate();
         if (count > 0)
             System.out.println("Account added");
@@ -94,7 +93,8 @@ public class AccountsDAOImpl implements AccountsDAO {
             int balance = resultSet.getInt(2);
             int opening_balance = resultSet.getInt(3);
             int id = resultSet.getInt(4);
-            Account account = new Account(account_number, balance, opening_balance, id);
+            String pendingAccount = resultSet.getNString(5);
+            Account account = new Account(account_number, balance, opening_balance, id, pendingAccount);
             accounts.add(account);
         }
         return accounts;
@@ -113,7 +113,8 @@ public class AccountsDAOImpl implements AccountsDAO {
             int balance = resultSet.getInt(2);
             int opening_balance = resultSet.getInt(3);
             int id = resultSet.getInt(4);
-            account = new Account(account_number, balance, opening_balance, id);
+            String pendingAccount = resultSet.getNString(5);
+            account = new Account(account_number, balance, opening_balance, id, pendingAccount);
         } else {
             System.out.println("No account found");
         }
