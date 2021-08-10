@@ -95,7 +95,6 @@ public class EmployeeDAOImpl implements EmployeeDAO {
         String sql = "select * from employee where id = " + empId;
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery(sql);
-        resultSet.next();
 
         if(resultSet.next()) {
             int id  = resultSet.getInt(1);

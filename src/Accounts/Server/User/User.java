@@ -21,9 +21,6 @@ public class User {
         this.passWord = passWord;
     }
 
-    public User(int id, String firstName, String lastName) {
-    }
-
     public int getId() {
         return id;
     }
@@ -74,6 +71,6 @@ public class User {
 
     @Override
     public String toString() {
-        return "User: { id: " + id + ", Name: " + firstName + " " + lastName + ", " + email + " }";
+        return "User: { id: " + id + ", Name: " + firstName + " " + lastName + ", Email: " + email + " }";
     }
 }

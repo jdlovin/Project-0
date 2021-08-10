@@ -90,13 +90,15 @@ public class UserDAOImpl implements UserDAO{
         String sql = "select * from users where id = " + userId;
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery(sql);
-        resultSet.next();
 
-        if(resultSet == null) {
+        if(resultSet.next()) {
             int id = resultSet.getInt(1);
             String firstName = resultSet.getString(2);
             String lastName = resultSet.getString(3);
-            user = new User(id, firstName, lastName);
+            String email = resultSet.getString(4);
+            String userName = resultSet.getString(5);
+            String passWord = resultSet.getString(6);
+            user = new User(id, firstName, lastName, email, userName, passWord);
         } else {
             System.out.println("None found");
         }

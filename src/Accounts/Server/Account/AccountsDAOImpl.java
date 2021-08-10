@@ -3,6 +3,8 @@ package Accounts.Server.Account;
 import Accounts.Server.ConnectionFactory;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AccountsDAOImpl implements AccountsDAO {
 
@@ -79,25 +81,42 @@ public class AccountsDAOImpl implements AccountsDAO {
 
     }
 
-    @Override
-    public void getAccounts(Account account) throws SQLException {
 
+    @Override
+    public List<Account> getAccounts() throws SQLException {
+        List<Account> accounts = new ArrayList<>();
+        String sql = "select * from accounts";
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery(sql);
+
+        while (resultSet.next()) {
+            int account_number = resultSet.getInt(1);
+            int balance = resultSet.getInt(2);
+            int opening_balance = resultSet.getInt(3);
+            int id = resultSet.getInt(4);
+            Account account = new Account(account_number, balance, opening_balance, id);
+            accounts.add(account);
+        }
+        return accounts;
     }
 
-    @Override
-    public void getAccounts() throws SQLException {
-
-    }
 
     @Override
-    public void accountByID(Account account) throws SQLException {
-        String sql = "select balance from accounts where id = ?";
-        PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        preparedStatement.setInt(1, account.getId());
-        ResultSet count = preparedStatement.executeQuery();
-//        if (count > 0)
-//            System.out.println("Your balance");
-//        else
-//            System.out.println("Something happened");
+    public Account accountByID(int accountId) throws SQLException {
+        Account account = new Account();
+        String sql = "select * from accounts where id = " + accountId;
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery(sql);
+
+        if (resultSet.next()) {
+            int account_number = resultSet.getInt(1);
+            int balance = resultSet.getInt(2);
+            int opening_balance = resultSet.getInt(3);
+            int id = resultSet.getInt(4);
+            account = new Account(account_number, balance, opening_balance, id);
+        } else {
+            System.out.println("No account found");
+        }
+        return account;
     }
 }

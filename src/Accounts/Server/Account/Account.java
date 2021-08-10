@@ -54,17 +54,22 @@ public class Account {
         this.id = id;
     }
 
+    @Override
+    public String toString() {
+        return "Account { Account Number: " + account_number + ", Balance: " + balance + " }";
+    }
+
 
     public synchronized void withdraw(int amount) {
         System.out.println("Withdrawal processing, please wait . . . ");
-        if (balance < amount) {
+        if (this.balance < amount) {
             System.out.println("Unable to process, insufficient funds");
             try {
                 wait();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            balance -= amount;
+            this.balance -= amount;
             System.out.println("Withdrawal complete");
         }
     }
