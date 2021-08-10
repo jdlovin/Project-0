@@ -77,7 +77,9 @@ public class AccountsDAOImpl implements AccountsDAO {
 
     @Override
     public void deleteAccount(Account account) {
-
+        String sql = "delete from accounts where account_number = ?";
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        preparedStatement.setInt(1, acco);
     }
 
 
