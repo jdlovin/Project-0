@@ -39,7 +39,7 @@ public class Main {
             Scanner menuScan = new Scanner(System.in);
             System.out.println();
             System.out.println("Please choose an option");
-            if (menuScan.hasNextInt());
+            if (menuScan.hasNextInt()) ;
             menuSelection = menuScan.nextInt();
 
             switch (menuSelection) {
@@ -74,15 +74,15 @@ public class Main {
                             userDAO.addUser(user);
                             break;
                         case 2:
-                           //Add a bank account - just add minimum balance exception
+                            //Add a bank account - just add minimum balance exception
                             System.out.print("Create a bank account");
                             System.out.println();
                             System.out.print("What is your user id?");
-                            int userId =menuScan.nextInt();
+                            int userId = menuScan.nextInt();
                             user.setId(userId);
                             System.out.print("How much do you want to deposit into the account?");
                             int newAccountBalance = menuScan.nextInt();
-                            if ( newAccountBalance >= 100) {
+                            if (newAccountBalance >= 100) {
                                 //new account goes here
                                 account.setBalance(newAccountBalance);
                                 String pendingStatus = "Y";
@@ -106,28 +106,15 @@ public class Main {
                 case 2:
                     System.out.println("Please Login to your employee account");
                     System.out.println();
-                    System.out.print("Username: ");
-                    String loginUserName = menuScan.next();
+                    System.out.print("Employee ID: ");
+                    int loginId = menuScan.nextInt();
                     System.out.println();
                     System.out.println();
                     System.out.print("Password :");
-                    String loginPassWord = menuScan.next();
-                    employee.setUserName(loginUserName);
-                    Employee employee1 = dao.employeeLogin(loginPassWord);
+                    String loginPassword = menuScan.next();
+                    employee.setId(loginId);
+                    Employee employee1 = dao.employeeLogin(loginId);
                     System.out.println(employee1);
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
                     System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
@@ -238,47 +225,58 @@ public class Main {
                             System.out.println("List of pending accounts");
                             System.out.println();
                             List<Account> pendingAccounts = accountsDAO.pendingAccounts();
-                            for (Account pendingList: pendingAccounts) {
+                            for (Account pendingList : pendingAccounts) {
                                 System.out.println(pendingList);
                             }
 
 
-                                System.out.println("Do you want to approve any of these accounts?");
-                                String pendingDecision = menuScan.next();
-                                if (pendingDecision.equals("yes")) {
-                                    System.out.println("Which account would like to approve");
-                                    System.out.print("What account number is it?");
-                                    int pendingNumber = menuScan.nextInt();
-                                    account.setAccount_number(pendingNumber);
-                                    String pendingStatus = "N";
-                                    account.setPendingAccount(pendingStatus);
-                                    accountsDAO.approveAccount(account);
-                                    System.out.println("Account approved!");
+                            System.out.println("Do you want to approve any of these accounts?");
+                            String pendingDecision = menuScan.next();
+                            if (pendingDecision.equals("yes")) {
+                                System.out.println("Which account would like to approve");
+                                System.out.print("What account number is it?");
+                                int pendingNumber = menuScan.nextInt();
+                                account.setAccount_number(pendingNumber);
+                                String pendingStatus = "N";
+                                account.setPendingAccount(pendingStatus);
+                                accountsDAO.approveAccount(account);
+                                System.out.println("Account approved!");
 
-                                } else {
-                                    System.out.println("Account rejection");
-                                    System.out.println();
-                                    System.out.println("Which account are you rejecting?");
-                                    System.out.print("Enter account number");
-                                    int pendingNumber = menuScan.nextInt();
-                                    accountsDAO.deleteAccount(pendingNumber);
-                                }
+                            } else {
+                                System.out.println("Account rejection");
+                                System.out.println();
+                                System.out.println("Which account are you rejecting?");
+                                System.out.print("Enter account number");
+                                int pendingNumber = menuScan.nextInt();
+                                accountsDAO.deleteAccount(pendingNumber);
+                            }
                             break;
                     }
                     break;
                 case 3:
                     //Users
 
+                    System.out.println("Please Login to your account");
+                    System.out.println();
+                    System.out.print("Employee ID: ");
+                    int userLoginId = menuScan.nextInt();
+                    System.out.println();
+                    System.out.println();
+                    System.out.print("Password :");
+                    String userLoginPassword = menuScan.next();
+                    user.setId(userLoginId);
+                    User user1 = userDAO.loginAccount(userLoginId);
+                    System.out.println(user1);
+
                     System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
                     System.out.println("User Menu");
                     System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
                     System.out.println("1. Add User");
                     System.out.println("2. Update User");
-                    System.out.println("3. Login");
-                    System.out.println("4. Withdraw");
-                    System.out.println("5. Deposit");
-                    System.out.println("6. Transfer");
-
+                    System.out.println("3. Withdraw");
+                    System.out.println("4. Deposit");
+                    System.out.println("5. Transfer");
+                    System.out.println("6. Check Balance");
 
 
                     System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
@@ -331,11 +329,7 @@ public class Main {
                             userDAO.updateUser(user);
                             break;
                         case 3:
-                            //Login
-                            System.out.println("Login");
-                            break;
-                        case 4:
-                             //Withdraw
+                            //Withdraw
 
                             //Is adding to memory and subtracting from the DB
 
@@ -347,11 +341,17 @@ public class Main {
                             account.setId(checkWithID);
 //                            account.withdraw(account.getBalance() - withdrawCheck);
                             account.setBalance(withdrawCheck);
-                            accountsDAO.withdrawAccount(account);
-                            System.out.println("You with withdrew $" + withdrawCheck);
+                            if (withdrawCheck > 0) {
+                                accountsDAO.withdrawAccount(account);
+                                System.out.println("You with withdrew $" + withdrawCheck);
+                            } else {
+                                System.out.println("Can't input a negative amount");
+                            }
                             break;
-                        case 5:
-                                //Deposit
+
+                            
+                        case 4:
+                            //Deposit
 
                             System.out.println("Deposit");
                             System.out.print("How much would you like to deposit?");
@@ -360,37 +360,46 @@ public class Main {
                             int checkDepId = menuScan.nextInt();
                             account.setId(checkDepId);
 //                            account.deposit(depositCheck);
-                            account.setBalance(depositCheck);
-                            accountsDAO.depositAccount(account);
-                            System.out.println("You deposited $" + depositCheck);
-                            System.out.println();
+                            if (depositCheck > 0) {
+                                account.setBalance(depositCheck);
+                                accountsDAO.depositAccount(account);
+                                System.out.println("You deposited $" + depositCheck);
+                                System.out.println();
+                            } else {
+                                System.out.println("Can't input a negative amount");
+                            }
+
                             break;
-                        case 6:
-                             //Transfer
+                        case 5:
+                            //Transfer
                             System.out.println("Withdraw");
                             System.out.print("How much would you like to transfer?");
                             int transferCheck = menuScan.nextInt();
-                            System.out.print("Which account number are you transferring from?");
-                            int transferWithID = menuScan.nextInt();
-                            account.setId(transferWithID);
+                            if (transferCheck > 0) {
+                                System.out.print("Which account number are you transferring from?");
+                                int transferWithID = menuScan.nextInt();
+                                account.setId(transferWithID);
 //                            account.withdraw(account.getBalance() - transferCheck);
-                            account.setBalance(transferCheck);
-                            accountsDAO.withdrawAccount(account);
-                            System.out.println("You with withdrew $" + transferCheck);
-                            //Start deposit
+                                account.setBalance(transferCheck);
+                                accountsDAO.withdrawAccount(account);
+                                System.out.println("You with withdrew $" + transferCheck);
+                                //Start deposit
 
-                            System.out.print("Which account number is this transferring to?");
-                            int transferToId = menuScan.nextInt();
-                            account.setId(transferToId);
+                                System.out.print("Which account number is this transferring to?");
+                                int transferToId = menuScan.nextInt();
+                                account.setId(transferToId);
 //                            account.deposit(transferCheck);
-                            account.setBalance(transferCheck);
-                            accountsDAO.depositAccount(account);
-                            System.out.println("You deposited $" + transferCheck);
-                            System.out.println();
+                                account.setBalance(transferCheck);
+                                accountsDAO.depositAccount(account);
+                                System.out.println("You deposited $" + transferCheck);
+                                System.out.println();
 
+                            } else {
+                                System.out.println("Can't input a negative amount");
+                            }
                             System.out.println("Transfer");
                             break;
-                        case 7:
+                        case 6:
                             System.out.println("Check balance");
                             System.out.println();
                             System.out.println("Enter account number");

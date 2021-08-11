@@ -66,13 +66,13 @@ public class EmployeeDAOImpl implements EmployeeDAO {
     }
 
     @Override
-    public Employee employeeLogin(String loginPassWord) throws SQLException {
+    public Employee employeeLogin(int loginId) throws SQLException {
         Employee employee = new Employee();
-        String sql = "select * from employee where id = " + loginPassWord;
+        String sql = "select * from employee where id = " + loginId;
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery(sql);
 
-        if (resultSet.next()) {
+        while (resultSet.next()) {
             int id = resultSet.getInt(1);
             String firstName = resultSet.getString(2);
             String lastName = resultSet.getString(3);
@@ -80,10 +80,12 @@ public class EmployeeDAOImpl implements EmployeeDAO {
             String userName = resultSet.getString(5);
             String passWord = resultSet.getString(6);
             employee = new Employee(id, firstName, lastName, email, userName, passWord);
-
-        } else {
-            System.out.println("Something happened");
         }
+
+        if (loginId == employeeById(loginId).getId())
+            System.out.println("Login successful");
+        else
+            System.out.println("Incorrect ID");
         return employee;
     }
 

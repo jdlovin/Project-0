@@ -1,6 +1,7 @@
 package Accounts.Server.User;
 
 import Accounts.Server.ConnectionFactory;
+import Accounts.Server.Employee.Employee;
 import com.mysql.cj.protocol.Resultset;
 
 import java.sql.*;
@@ -74,6 +75,30 @@ public class UserDAOImpl implements UserDAO{
         int count = preparedStatement.executeUpdate();
         if (count > 0)
             System.out.println("Checking account added");
+    }
+
+    @Override
+    public User loginAccount(int userLoginId) throws SQLException {
+        User user = new User();
+        String sql = "select * from users where id = " + userLoginId;
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery(sql);
+
+        while (resultSet.next()) {
+            int id = resultSet.getInt(1);
+            String firstName = resultSet.getString(2);
+            String lastName = resultSet.getString(3);
+            String email = resultSet.getString(4);
+            String userName = resultSet.getString(5);
+            String passWord = resultSet.getString(6);
+            int checking_account_number = resultSet.getInt(7);
+            user = new User(id, firstName, lastName, email, userName, passWord, checking_account_number);
+        }
+        if (userLoginId == userById(userLoginId).getId())
+            System.out.println("Login successful");
+        else
+            System.out.println("Incorrect ID");
+        return user;
     }
 
     @Override
