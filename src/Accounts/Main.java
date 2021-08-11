@@ -92,9 +92,6 @@ public class Main {
                             userDAO.addCheckingAccount(user);
                             System.out.println("Pending status");
 
-
-
-
                             break;
 
                     }
@@ -115,6 +112,7 @@ public class Main {
                     System.out.println("5. List of user accounts");
                     System.out.println("6. Delete a user");
                     System.out.println("7. List of users");
+                    System.out.println("8. View pending accounts");
                     System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
                     System.out.print("Select an option:");
                     menuSelection = menuScan.nextInt();
@@ -165,7 +163,6 @@ public class Main {
                             break;
                         case 3:
                             //Get a list of employees
-
                             System.out.println("List of employees");
                             List<Employee> employees = dao.getEmployees();
                             for (Employee employeeList : employees) {
@@ -210,7 +207,35 @@ public class Main {
                             break;
                         case 8:
                             //List of accounts that are pending
-                            
+                            System.out.println("List of pending accounts");
+                            System.out.println();
+                            List<Account> pendingAccounts = accountsDAO.pendingAccounts();
+                            for (Account pendingList: pendingAccounts) {
+                                System.out.println(pendingList);
+                            }
+
+
+                                System.out.println("Do you want to approve any of these accounts?");
+                                String pendingDecision = menuScan.next();
+                                if (pendingDecision.equals("yes")) {
+                                    System.out.println("Which account would like to approve");
+                                    System.out.print("What account number is it?");
+                                    int pendingNumber = menuScan.nextInt();
+                                    account.setAccount_number(pendingNumber);
+                                    String pendingStatus = "N";
+                                    account.setPendingAccount(pendingStatus);
+                                    accountsDAO.approveAccount(account);
+                                    System.out.println("Account approved!");
+
+                                } else {
+                                    System.out.println("Account rejection");
+                                    System.out.println();
+                                    System.out.println("Which account are you rejecting?");
+                                    System.out.print("Enter account number");
+                                    int pendingNumber = menuScan.nextInt();
+                                    accountsDAO.deleteAccount(pendingNumber);
+                                }
+                            break;
                     }
                     break;
                 case 4:
@@ -306,11 +331,11 @@ public class Main {
 //                            System.out.print("Which account number is this?");
 //                            int checkWithID = menuScan.nextInt();
 //                            account.setId(checkWithID);
-//                            account.withdraw(account.getBalance() - withdrawCheck);
+////                            account.withdraw(account.getBalance() - withdrawCheck);
 //                            account.setBalance(withdrawCheck);
 //                            accountsDAO.withdrawAccount(account);
 //                            System.out.println("You with withdrew $" + withdrawCheck);
-//
+
 
 //    //Deposit
 //

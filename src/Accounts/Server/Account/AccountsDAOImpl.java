@@ -76,10 +76,48 @@ public class AccountsDAOImpl implements AccountsDAO {
     }
 
     @Override
-    public void deleteAccount(Account account) {
+    public void deleteAccount(int account_number) throws SQLException {
         String sql = "delete from accounts where account_number = ?";
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        preparedStatement.setInt(1, acco);
+        preparedStatement.setInt(1, account_number);
+        int count = preparedStatement.executeUpdate();
+        if (count > 0)
+            System.out.println("Account Rejected");
+        else
+            System.out.println("Something went wrong");
+    }
+
+    @Override
+    public void approveAccount(Account account) throws SQLException {
+        String sql = "update accounts set pendingAccount = ? where account_number = ?";
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        preparedStatement.setString(1, account.getPendingAccount());
+        preparedStatement.setInt(2, account.getAccount_number());
+        int count = preparedStatement.executeUpdate();
+        if (count > 0)
+            System.out.println("Account Approved!");
+        else
+            System.out.println("Something didn't work");
+    }
+
+    @Override
+    public List<Account> pendingAccounts() throws SQLException {
+        List<Account> accountsPending = new ArrayList<>();
+        String sql = "select * from accounts where pendingAccount = 'y'";
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery(sql);
+        while (resultSet.next()) {
+            int account_number = resultSet.getInt(1);
+            int balance = resultSet.getInt(2);
+            int id = resultSet.getInt(3);
+            int opening_balance = resultSet.getInt(4);
+            String pendingAccount = resultSet.getString(5);
+            Account account = new Account(account_number, balance, id, opening_balance, pendingAccount);
+            accountsPending.add(account);
+        }
+
+
+        return accountsPending;
     }
 
 

@@ -7,7 +7,9 @@ public interface AccountsDAO {
     void addAccount(Account account) throws SQLException;
     void depositAccount(Account account) throws SQLException;
     void withdrawAccount(Account account) throws SQLException;
-    void deleteAccount(Account account);
+    void deleteAccount(int account_number) throws SQLException;
+    void approveAccount(Account account) throws SQLException;
+    List<Account> pendingAccounts() throws SQLException;
     List<Account> getAccounts() throws SQLException;
 
     Account accountByID (int id) throws SQLException;

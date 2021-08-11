@@ -58,7 +58,7 @@ public class Account {
 
     @Override
     public String toString() {
-        return "Account { Account Number: " + account_number + ", Balance: " + balance + " }";
+        return "Account { Account Number: " + account_number + ", Balance: " + balance + ", Pending: " + pendingAccount + " }";
     }
 
 
