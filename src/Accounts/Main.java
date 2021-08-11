@@ -11,6 +11,7 @@ import Accounts.Server.User.UserDAO;
 import Accounts.Server.User.UserDAOFactory;
 
 import java.sql.SQLException;
+import java.sql.SQLOutput;
 import java.util.List;
 import java.util.Scanner;
 
@@ -32,9 +33,8 @@ public class Main {
             System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
             System.out.println("What would you like to do today?");
             System.out.println("1. Register");
-            System.out.println("2. Saving");
-            System.out.println("3. Employees");
-            System.out.println("4. Users");
+            System.out.println("2. Employees");
+            System.out.println("3. Users");
             System.out.println("9. Exit");
             Scanner menuScan = new Scanner(System.in);
             System.out.println();
@@ -82,26 +82,54 @@ public class Main {
                             user.setId(userId);
                             System.out.print("How much do you want to deposit into the account?");
                             int newAccountBalance = menuScan.nextInt();
-                            //new account goes here
-                            account.setBalance(newAccountBalance);
-                            String pendingStatus = "Y";
-                            account.setPendingAccount(pendingStatus);
-                            account.setId(userId);
-                            user.setChecking_account_number(userId);
-                            accountsDAO.addAccount(account);
-                            userDAO.addCheckingAccount(user);
-                            System.out.println("Pending status");
-
+                            if ( newAccountBalance >= 100) {
+                                //new account goes here
+                                account.setBalance(newAccountBalance);
+                                String pendingStatus = "Y";
+                                account.setPendingAccount(pendingStatus);
+                                account.setId(userId);
+                                user.setChecking_account_number(userId);
+                                accountsDAO.addAccount(account);
+                                userDAO.addCheckingAccount(user);
+                                System.out.println("Pending status");
+                            } else {
+                                System.out.println("Sorry, the minimum deposit is $100");
+                                System.out.println();
+                                System.out.println("Have a nice day!");
+                                System.out.println();
+                                System.out.println();
+                            }
                             break;
-
+// This is all set from here, up
                     }
                     break;
                 case 2:
-                    //Savings
+                    System.out.println("Please Login to your employee account");
+                    System.out.println();
+                    System.out.print("Username: ");
+                    String loginUserName = menuScan.next();
+                    System.out.println();
+                    System.out.println();
+                    System.out.print("Password :");
+                    String loginPassWord = menuScan.next();
+                    employee.setUserName(loginUserName);
+                    Employee employee1 = dao.employeeLogin(loginPassWord);
+                    System.out.println(employee1);
 
-                    System.out.println("Saving");
-                    break;
-                case 3:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                     System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
                     System.out.println("Employee Menu");
                     System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
@@ -238,7 +266,7 @@ public class Main {
                             break;
                     }
                     break;
-                case 4:
+                case 3:
                     //Users
 
                     System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
@@ -247,6 +275,12 @@ public class Main {
                     System.out.println("1. Add User");
                     System.out.println("2. Update User");
                     System.out.println("3. Login");
+                    System.out.println("4. Withdraw");
+                    System.out.println("5. Deposit");
+                    System.out.println("6. Transfer");
+
+
+
                     System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
                     System.out.print("Select an option:");
                     menuSelection = menuScan.nextInt();
@@ -298,6 +332,73 @@ public class Main {
                             break;
                         case 3:
                             //Login
+                            System.out.println("Login");
+                            break;
+                        case 4:
+                             //Withdraw
+
+                            //Is adding to memory and subtracting from the DB
+
+                            System.out.println("Withdraw");
+                            System.out.print("How much would you like to withdraw?");
+                            int withdrawCheck = menuScan.nextInt();
+                            System.out.print("Which account number is this?");
+                            int checkWithID = menuScan.nextInt();
+                            account.setId(checkWithID);
+//                            account.withdraw(account.getBalance() - withdrawCheck);
+                            account.setBalance(withdrawCheck);
+                            accountsDAO.withdrawAccount(account);
+                            System.out.println("You with withdrew $" + withdrawCheck);
+                            break;
+                        case 5:
+                                //Deposit
+
+                            System.out.println("Deposit");
+                            System.out.print("How much would you like to deposit?");
+                            int depositCheck = menuScan.nextInt();
+                            System.out.print("Which account number is this?");
+                            int checkDepId = menuScan.nextInt();
+                            account.setId(checkDepId);
+//                            account.deposit(depositCheck);
+                            account.setBalance(depositCheck);
+                            accountsDAO.depositAccount(account);
+                            System.out.println("You deposited $" + depositCheck);
+                            System.out.println();
+                            break;
+                        case 6:
+                             //Transfer
+                            System.out.println("Withdraw");
+                            System.out.print("How much would you like to transfer?");
+                            int transferCheck = menuScan.nextInt();
+                            System.out.print("Which account number are you transferring from?");
+                            int transferWithID = menuScan.nextInt();
+                            account.setId(transferWithID);
+//                            account.withdraw(account.getBalance() - transferCheck);
+                            account.setBalance(transferCheck);
+                            accountsDAO.withdrawAccount(account);
+                            System.out.println("You with withdrew $" + transferCheck);
+                            //Start deposit
+
+                            System.out.print("Which account number is this transferring to?");
+                            int transferToId = menuScan.nextInt();
+                            account.setId(transferToId);
+//                            account.deposit(transferCheck);
+                            account.setBalance(transferCheck);
+                            accountsDAO.depositAccount(account);
+                            System.out.println("You deposited $" + transferCheck);
+                            System.out.println();
+
+                            System.out.println("Transfer");
+                            break;
+                        case 7:
+                            System.out.println("Check balance");
+                            System.out.println();
+                            System.out.println("Enter account number");
+                            int accountNumber = menuScan.nextInt();
+                            Account accountBalance = accountsDAO.checkAccount(accountNumber);
+                            System.out.println(accountBalance);
+                            break;
+
                     }
                     break;
 
@@ -305,6 +406,8 @@ public class Main {
                     //Quit
 
                     break;
+                default:
+                    System.out.println("Please choose a number");
             }
         }
     }

@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface AccountsDAO {
+    Account checkAccount(int account_number) throws SQLException;
     void addAccount(Account account) throws SQLException;
     void depositAccount(Account account) throws SQLException;
     void withdrawAccount(Account account) throws SQLException;

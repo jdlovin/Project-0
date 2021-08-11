@@ -2,6 +2,7 @@ package Accounts.Server.Account;
 
 import Accounts.Server.ConnectionFactory;
 
+import javax.swing.plaf.nimbus.State;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,14 +35,25 @@ public class AccountsDAOImpl implements AccountsDAO {
             System.out.println("Oh no! Something happened");
     }
 
-//    @Override
-//    public void checkAccount(Account account) throws SQLException {
-////        String sql = "select balance from accounts where id = ?";
-////        PreparedStatement preparedStatement = connection.prepareStatement(sql);
-////        preparedStatement.setInt(1, account.getId());
-////        ResultSet count = preparedStatement.executeQuery();
-////        return account;
-//    }
+    @Override
+    public Account checkAccount(int accountNumber) throws SQLException {
+        Account account = new Account();
+        String sql = "select * from accounts where id = " + accountNumber;
+        Statement statement = connection.createStatement();
+        ResultSet count = statement.executeQuery(sql);
+
+        if (count.next()) {
+            int account_number = count.getInt(1);
+            int balance = count.getInt(2);
+            int opening_balance = count.getInt(3);
+            int id = count.getInt(4);
+            String pendingAccount = count.getString(5);
+            account = new Account(account_number, balance, opening_balance, id, pendingAccount);
+        } else {
+            System.out.println("Something happened");
+        }
+        return account;
+    }
 
     @Override
     public void depositAccount(Account account) throws SQLException {

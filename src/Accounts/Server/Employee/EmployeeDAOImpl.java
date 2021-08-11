@@ -66,6 +66,28 @@ public class EmployeeDAOImpl implements EmployeeDAO {
     }
 
     @Override
+    public Employee employeeLogin(String loginPassWord) throws SQLException {
+        Employee employee = new Employee();
+        String sql = "select * from employee where id = " + loginPassWord;
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery(sql);
+
+        if (resultSet.next()) {
+            int id = resultSet.getInt(1);
+            String firstName = resultSet.getString(2);
+            String lastName = resultSet.getString(3);
+            String email = resultSet.getString(4);
+            String userName = resultSet.getString(5);
+            String passWord = resultSet.getString(6);
+            employee = new Employee(id, firstName, lastName, email, userName, passWord);
+
+        } else {
+            System.out.println("Something happened");
+        }
+        return employee;
+    }
+
+    @Override
     public List<Employee> getEmployees() throws SQLException {
         List<Employee> employees = new ArrayList<>();
         String sql = "select * from employee";
@@ -96,8 +118,8 @@ public class EmployeeDAOImpl implements EmployeeDAO {
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery(sql);
 
-        if(resultSet.next()) {
-            int id  = resultSet.getInt(1);
+        if (resultSet.next()) {
+            int id = resultSet.getInt(1);
             String firstName = resultSet.getString(2);
             String lastName = resultSet.getString(3);
             String email = resultSet.getString(4);
