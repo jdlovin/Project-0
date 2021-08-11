@@ -11,7 +11,6 @@ import Accounts.Server.User.UserDAO;
 import Accounts.Server.User.UserDAOFactory;
 
 import java.sql.SQLException;
-import java.sql.SQLOutput;
 import java.util.List;
 import java.util.Scanner;
 
