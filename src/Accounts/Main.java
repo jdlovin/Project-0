@@ -93,7 +93,7 @@ public class Main {
                             userDAO.addUser(user);
                             break;
                         case 2:
-                            //Add a bank account - just add minimum balance exception
+                            //Add a bank account
                             System.out.print("Create a bank account");
                             System.out.println();
                             System.out.print("What is your user id?");
@@ -111,6 +111,7 @@ public class Main {
                                 accountsDAO.addAccount(account);
                                 userDAO.addCheckingAccount(user);
                                 System.out.println("Pending status");
+                                System.out.println(account);
                             } else {
                                 System.out.println("Sorry, the minimum deposit is $100");
                                 System.out.println();
