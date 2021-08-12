@@ -146,6 +146,7 @@ public class Main {
                     System.out.println("5. Delete a user");
                     System.out.println("6. List of users");
                     System.out.println("7. View pending accounts");
+                    System.out.println("8 View past transactions");
                     System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
                     System.out.print("Select an option:");
                     menuSelection = menuScan.nextInt();
@@ -237,7 +238,6 @@ public class Main {
                                 System.out.println(pendingList);
                             }
 
-
                             System.out.println("Do you want to approve any of these accounts?");
                             String pendingDecision = menuScan.next();
                             if (pendingDecision.equals("yes")) {
@@ -267,6 +267,7 @@ public class Main {
                                 System.out.println(contentLine);
                                 contentLine = reader.readLine();
                             }
+                            break;
                     }
                     break;
                 case 3:

@@ -19,3 +19,5 @@ App Started
 2021/08/12 00:30:50
 Transfer 
 Amount transferred: $50, Account Number: 1, to Account Number: 2
+2021/08/12 00:58:17
+App Started 
