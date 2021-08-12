@@ -3,30 +3,38 @@ package Accounts;
 import Accounts.Server.Account.Account;
 import Accounts.Server.Account.AccountDAOFactory;
 import Accounts.Server.Account.AccountsDAO;
-import Accounts.Server.Account.AccountsDAOImpl;
 import Accounts.Server.Employee.Employee;
 import Accounts.Server.Employee.EmployeeDAO;
 import Accounts.Server.Employee.EmployeeDOAFactory;
 import Accounts.Server.User.User;
 import Accounts.Server.User.UserDAO;
 import Accounts.Server.User.UserDAOFactory;
-import org.apache.log4j.BasicConfigurator;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
-import org.w3c.dom.ls.LSOutput;
-import org.apache.log4j.FileAppender;
 
+import org.apache.log4j.Logger;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
 
 public class Main {
 
-    public static void main(String[] args) throws SQLException {
-        Logger logger = Logger.getLogger(LoggerSetUp.class);
-        logger.info("This is my first log statement");
+    public static void main(String[] args) throws SQLException, IOException {
+        BufferedReader reader = new BufferedReader( new FileReader( "transactionLog.txt"));
+
+
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        Date date = new Date();
+        System.out.println(dateFormat.format(date));
+        FileWriter logger = new FileWriter("transactionLog.txt", true);
+        logger.write(dateFormat.format(date) + "\n" + "App Started \n");
 
 
         AccountsDAO accountsDAO = AccountDAOFactory.getAccountDao();
@@ -134,11 +142,10 @@ public class Main {
                     System.out.println("1. Add Employee");
                     System.out.println("2. Update Employee");
                     System.out.println("3. List of employees");
-                    System.out.println("4. Find employee by ID #");
-                    System.out.println("5. List of user accounts");
-                    System.out.println("6. Delete a user");
-                    System.out.println("7. List of users");
-                    System.out.println("8. View pending accounts");
+                    System.out.println("4. List of user accounts");
+                    System.out.println("5. Delete a user");
+                    System.out.println("6. List of users");
+                    System.out.println("7. View pending accounts");
                     System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
                     System.out.print("Select an option:");
                     menuSelection = menuScan.nextInt();
@@ -196,16 +203,6 @@ public class Main {
                             }
                             break;
                         case 4:
-                            // Get an employee by their ID
-
-                            System.out.println("Employee search");
-                            System.out.println();
-                            System.out.print("Enter employee ID: ");
-                            int empId = menuScan.nextInt();
-                            Employee employeeById = dao.employeeById(empId);
-                            System.out.println(employeeById);
-                            break;
-                        case 5:
                             //Gets a list of user accounts
 
                             System.out.println("List of user accounts");
@@ -214,7 +211,7 @@ public class Main {
                                 System.out.println(accountList);
                             }
                             break;
-                        case 6:
+                        case 5:
                             //delete user
                             System.out.println("Had a bad line of credit");
                             System.out.println("Delete User");
@@ -222,7 +219,7 @@ public class Main {
                             user.setId(deleteUserId);
                             userDAO.deleteUser(user.getId());
                             break;
-                        case 7:
+                        case 6:
                             //List of users
 
                             System.out.println("List of users");
@@ -231,7 +228,7 @@ public class Main {
                                 System.out.println(userList);
                             }
                             break;
-                        case 8:
+                        case 7:
                             //List of accounts that are pending
                             System.out.println("List of pending accounts");
                             System.out.println();
@@ -262,6 +259,14 @@ public class Main {
                                 accountsDAO.deleteAccount(pendingNumber);
                             }
                             break;
+                        case 8:
+                            //View log
+                            System.out.println("Viewing transaction log");
+                            String contentLine = reader.readLine();
+                            while (contentLine != null) {
+                                System.out.println(contentLine);
+                                contentLine = reader.readLine();
+                            }
                     }
                     break;
                 case 3:
@@ -282,13 +287,12 @@ public class Main {
                     System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
                     System.out.println("User Menu");
                     System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
-                    System.out.println("1. Add User");
-                    System.out.println("2. Update User");
-                    System.out.println("3. Withdraw");
-                    System.out.println("4. Deposit");
-                    System.out.println("5. Transfer");
-                    System.out.println("6. Check Balance");
-
+                    System.out.println("1. Update User");
+                    System.out.println("2. Withdraw");
+                    System.out.println("3. Deposit");
+                    System.out.println("4. Transfer");
+                    System.out.println("5. Check Balance");
+                    System.out.println("6. View transfers");
 
                     System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
                     System.out.print("Select an option:");
@@ -296,26 +300,6 @@ public class Main {
 
                     switch (menuSelection) {
                         case 1:
-                            //Add User
-
-                            System.out.print("First name: ");
-                            String firstName = menuScan.next();
-                            user.setFirstName(firstName);
-                            System.out.print("Last name: ");
-                            String lastName = menuScan.next();
-                            user.setLastName(lastName);
-                            System.out.print("Email: ");
-                            String email = menuScan.next();
-                            user.setEmail(email);
-                            System.out.print("Username: ");
-                            String userName = menuScan.next();
-                            user.setUserName(userName);
-                            System.out.print("Password: ");
-                            String passWord = menuScan.next();
-                            user.setPassWord(passWord);
-                            userDAO.addUser(user);
-                            break;
-                        case 2:
                             //Update User
 
                             System.out.print("First name: ");
@@ -339,7 +323,7 @@ public class Main {
                             user.setId(id);
                             userDAO.updateUser(user);
                             break;
-                        case 3:
+                        case 2:
                             //Withdraw
 
                             //Is adding to memory and subtracting from the DB
@@ -360,11 +344,13 @@ public class Main {
                             }
 
                             //Logging Withdrawals
-                            logger.info("Withdrawal occurred: " + withdrawCheck + ", from account number: " + checkWithAccount);
+                            logger.write(dateFormat.format(date) + "\n" + "Withdrawal \n");
+                            logger.write("Amount withdrew: $" + withdrawCheck + ", Account Number: " + checkWithAccount + "\n");
+                            logger.flush();
                             break;
 
                             
-                        case 4:
+                        case 3:
                             //Deposit
 
                             System.out.println("Deposit");
@@ -372,7 +358,7 @@ public class Main {
                             int depositCheck = menuScan.nextInt();
                             System.out.print("Which account number is this?");
                             int checkDepId = menuScan.nextInt();
-                            account.setId(checkDepId);
+                            account.setAccount_number(checkDepId);
 //                            account.deposit(depositCheck);
                             if (depositCheck > 0) {
                                 account.setBalance(depositCheck);
@@ -383,8 +369,13 @@ public class Main {
                                 System.out.println("Can't input a negative amount");
                             }
 
+                            //Deposit logger
+                            logger.write(dateFormat.format(date) + "\n" + "Deposit \n");
+                            logger.write("Amount withdrew: $" + depositCheck + ", Account Number: " + checkDepId + "\n");
+                            logger.flush();
+
                             break;
-                        case 5:
+                        case 4:
                             //Transfer
                             System.out.println("Withdraw");
                             System.out.print("How much would you like to transfer?");
@@ -418,12 +409,19 @@ public class Main {
                                 System.out.println("You deposited $" + transferCheck);
                                 System.out.println();
 
+                                //Transfer Log
+                                logger.write(dateFormat.format(date) + "\n" + "Transfer \n");
+                                logger.write("Amount transferred: $" + transferCheck + "from Account Number: " + transferWithAccount + ", to Account Number: " + transferToId + "\n");
+                                logger.flush();
+
+
+
                             } else {
                                 System.out.println("Can't input a negative amount");
                             }
                             System.out.println("Transfer");
                             break;
-                        case 6:
+                        case 5:
                             System.out.println("Check balance");
                             System.out.println();
                             System.out.println("Enter account number");
@@ -431,7 +429,7 @@ public class Main {
                             Account accountBalance = accountsDAO.checkAccount(accountNumber);
                             System.out.println(accountBalance);
                             break;
-                        case 7:
+                        case 6:
                             //View pending
                             System.out.println("Handle incoming transfer");
                             System.out.println();
@@ -458,6 +456,11 @@ public class Main {
                                 System.out.println("Transfer complete");
 
                                 System.out.println("You transferred in: " + transferIn);
+
+                                //Incoming transfer logger
+                                logger.write(dateFormat.format(date) + "\n" + "Deposit \n");
+                                logger.write("Amount accepted $" + transferIn + ", Account Number: " + accountTransferNumber + "\n");
+                                logger.flush();
                             } else {
                                 System.out.println("Have a nice day");
                             }
@@ -466,7 +469,7 @@ public class Main {
 
                 case 9:
                     //Quit
-
+                    logger.close();
                     break;
                 default:
                     System.out.println("Please choose a number");

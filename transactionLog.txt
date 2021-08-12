@@ -1,0 +1,21 @@
+
+2021/08/12 00:05:56
+App Started2021/08/12 00:11:30
+App Started2021/08/12 00:11:30
+WithdrawalAmount withdrew: $20, Account Number: 12021/08/12 00:13:22
+App Started2021/08/12 00:13:22
+Withdrawal 
+Amount withdrew: $40, Account Number: 22021/08/12 00:13:22
+Withdrawal 
+Amount withdrew: $60, Account Number: 12021/08/12 00:18:27
+App Started2021/08/12 00:18:27
+Deposit 
+Amount withdrew: $50, Account Number: 1
+2021/08/12 00:18:27
+Deposit 
+Amount withdrew: $500, Account Number: 1
+2021/08/12 00:30:50
+App Started 
+2021/08/12 00:30:50
+Transfer 
+Amount transferred: $50, Account Number: 1, to Account Number: 2

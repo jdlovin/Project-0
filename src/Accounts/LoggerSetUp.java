@@ -1,8 +1,9 @@
 package Accounts;
 
+import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
 public class LoggerSetUp {
-    static Logger logger = Logger.getLogger(LoggerSetUp.class);
+    private static final Logger logger = LogManager.getLogger(Main.class);
 }

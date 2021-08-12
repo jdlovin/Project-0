@@ -69,7 +69,7 @@ public class AccountsDAOImpl implements AccountsDAO {
         BalanceThread balanceThread = new BalanceThread(account);
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         preparedStatement.setInt(1, account.getBalance());
-        preparedStatement.setInt(2, account.getId());
+        preparedStatement.setInt(2, account.getAccount_number());
         int count = preparedStatement.executeUpdate();
         if (count > 0) {
             System.out.println("Account updated");
@@ -174,7 +174,7 @@ public class AccountsDAOImpl implements AccountsDAO {
     @Override
     public List<Account> getAccounts() throws SQLException {
         List<Account> accounts = new ArrayList<>();
-        String sql = "select * from accounts";
+        String sql = "call get_accounts";
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery(sql);
 
