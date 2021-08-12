@@ -74,7 +74,7 @@ public class UserDAOImpl implements UserDAO{
         preparedStatement.setInt(2,user.getId());
         int count = preparedStatement.executeUpdate();
         if (count > 0)
-            System.out.println("Checking account added");
+            System.out.println();
     }
 
     @Override
