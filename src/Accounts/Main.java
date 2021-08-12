@@ -3,12 +3,19 @@ package Accounts;
 import Accounts.Server.Account.Account;
 import Accounts.Server.Account.AccountDAOFactory;
 import Accounts.Server.Account.AccountsDAO;
+import Accounts.Server.Account.AccountsDAOImpl;
 import Accounts.Server.Employee.Employee;
 import Accounts.Server.Employee.EmployeeDAO;
 import Accounts.Server.Employee.EmployeeDOAFactory;
 import Accounts.Server.User.User;
 import Accounts.Server.User.UserDAO;
 import Accounts.Server.User.UserDAOFactory;
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
+import org.w3c.dom.ls.LSOutput;
+import org.apache.log4j.FileAppender;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -16,7 +23,12 @@ import java.util.Scanner;
 
 
 public class Main {
+
     public static void main(String[] args) throws SQLException {
+        Logger logger = Logger.getLogger(LoggerSetUp.class);
+        logger.info("This is my first log statement");
+
+
         AccountsDAO accountsDAO = AccountDAOFactory.getAccountDao();
         EmployeeDAO dao = EmployeeDOAFactory.getEmployeeDao();
         UserDAO userDAO = UserDAOFactory.getUserDao();
@@ -257,7 +269,7 @@ public class Main {
 
                     System.out.println("Please Login to your account");
                     System.out.println();
-                    System.out.print("Employee ID: ");
+                    System.out.print("User ID: ");
                     int userLoginId = menuScan.nextInt();
                     System.out.println();
                     System.out.println();
@@ -336,8 +348,8 @@ public class Main {
                             System.out.print("How much would you like to withdraw?");
                             int withdrawCheck = menuScan.nextInt();
                             System.out.print("Which account number is this?");
-                            int checkWithID = menuScan.nextInt();
-                            account.setId(checkWithID);
+                            int checkWithAccount = menuScan.nextInt();
+                            account.setAccount_number(checkWithAccount);
 //                            account.withdraw(account.getBalance() - withdrawCheck);
                             account.setBalance(withdrawCheck);
                             if (withdrawCheck > 0) {
@@ -346,6 +358,9 @@ public class Main {
                             } else {
                                 System.out.println("Can't input a negative amount");
                             }
+
+                            //Logging Withdrawals
+                            logger.info("Withdrawal occurred: " + withdrawCheck + ", from account number: " + checkWithAccount);
                             break;
 
                             
@@ -376,20 +391,30 @@ public class Main {
                             int transferCheck = menuScan.nextInt();
                             if (transferCheck > 0) {
                                 System.out.print("Which account number are you transferring from?");
-                                int transferWithID = menuScan.nextInt();
-                                account.setId(transferWithID);
+                                int transferWithAccount = menuScan.nextInt();
+                                account.setAccount_number(transferWithAccount);
 //                            account.withdraw(account.getBalance() - transferCheck);
                                 account.setBalance(transferCheck);
                                 accountsDAO.withdrawAccount(account);
                                 System.out.println("You with withdrew $" + transferCheck);
+
+                                //Transfer to account
+                                String pending = "pending";
+                                account.setPendingTransferIn(pending);
+
+
+
                                 //Start deposit
 
                                 System.out.print("Which account number is this transferring to?");
                                 int transferToId = menuScan.nextInt();
                                 account.setId(transferToId);
+                                account.setAccount_number(transferToId);
+                                account.setPendingTransferAmount(transferCheck);
 //                            account.deposit(transferCheck);
                                 account.setBalance(transferCheck);
                                 accountsDAO.depositAccount(account);
+                                accountsDAO.pendingTransfer(account);
                                 System.out.println("You deposited $" + transferCheck);
                                 System.out.println();
 
@@ -406,7 +431,36 @@ public class Main {
                             Account accountBalance = accountsDAO.checkAccount(accountNumber);
                             System.out.println(accountBalance);
                             break;
+                        case 7:
+                            //View pending
+                            System.out.println("Handle incoming transfer");
+                            System.out.println();
+                            System.out.println("Enter account number");
+                            int accountTransferNumber = menuScan.nextInt();
+                            Account accountTransfer = accountsDAO.checkAccount(accountTransferNumber);
+                            System.out.println(accountTransfer);
+                            System.out.println("Would you like to handle any incoming transfers?");
+                            System.out.println();
+                            System.out.println("Press 1 for yes");
+                            System.out.println("Press 2 for no");
+                            int transferSelection = menuScan.nextInt();
+                            if(transferSelection == 1) {
+                                System.out.println("Please confirm the amount you are transferring in");
+                                System.out.print("Amount:");
+                                int transferIn = menuScan.nextInt();
+                                account.setPendingTransferAmount(transferIn);
+                                account.setAccount_number(accountTransferNumber);
+                                account.setBalance(transferIn);
+                                String setStatus = "None";
+                                account.setPendingTransferIn(setStatus);
+                                accountsDAO.checkIncomingTransfer(account);
+                                System.out.println();
+                                System.out.println("Transfer complete");
 
+                                System.out.println("You transferred in: " + transferIn);
+                            } else {
+                                System.out.println("Have a nice day");
+                            }
                     }
                     break;
 
@@ -431,56 +485,3 @@ public class Main {
 //                            System.out.println("3. Deposit");
 //                            System.out.println("4. Transfer");
 //                            menuSelection = menuScan.nextInt();
-
-// //Withdraw
-//
-//                            //Is adding to memory and subtracting from the DB
-//
-//                            System.out.println("Withdraw");
-//                            System.out.print("How much would you like to withdraw?");
-//                            int withdrawCheck = menuScan.nextInt();
-//                            System.out.print("Which account number is this?");
-//                            int checkWithID = menuScan.nextInt();
-//                            account.setId(checkWithID);
-////                            account.withdraw(account.getBalance() - withdrawCheck);
-//                            account.setBalance(withdrawCheck);
-//                            accountsDAO.withdrawAccount(account);
-//                            System.out.println("You with withdrew $" + withdrawCheck);
-
-
-//    //Deposit
-//
-//                            System.out.println("Deposit");
-//                            System.out.print("How much would you like to deposit?");
-//                            int depositCheck = menuScan.nextInt();
-//                            System.out.print("Which account number is this?");
-//                            int checkDepId = menuScan.nextInt();
-//                            account.setId(checkDepId);
-//                            account.deposit(depositCheck);
-//                            accountsDAO.depositAccount(account);
-//                            System.out.println("You deposited $" + depositCheck);
-//                            System.out.println();
-
-// //Transfer
-//                            System.out.println("Withdraw");
-//                            System.out.print("How much would you like to transfer?");
-//                            int transferCheck = menuScan.nextInt();
-//                            System.out.print("Which account number are you transferring from?");
-//                            int transferWithID = menuScan.nextInt();
-//                            account.setId(transferWithID);
-////                            account.withdraw(account.getBalance() - transferCheck);
-//                            account.setBalance(transferCheck);
-//                            accountsDAO.withdrawAccount(account);
-//                            System.out.println("You with withdrew $" + transferCheck);
-//                            //Start deposit
-//
-//                            System.out.print("Which account number is this transferring to?");
-//                            int transferToId = menuScan.nextInt();
-//                            account.setId(transferToId);
-////                            account.deposit(transferCheck);
-//                            account.setBalance(transferCheck);
-//                            accountsDAO.depositAccount(account);
-//                            System.out.println("You deposited $" + transferCheck);
-//                            System.out.println();
-//
-//                            System.out.println("Transfer");

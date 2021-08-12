@@ -10,6 +10,8 @@ public interface AccountsDAO {
     void withdrawAccount(Account account) throws SQLException;
     void deleteAccount(int account_number) throws SQLException;
     void approveAccount(Account account) throws SQLException;
+    void pendingTransfer(Account account) throws SQLException;
+    void checkIncomingTransfer(Account account) throws SQLException;
     List<Account> pendingAccounts() throws SQLException;
     List<Account> getAccounts() throws SQLException;
 

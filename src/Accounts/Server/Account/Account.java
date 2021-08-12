@@ -8,21 +8,42 @@ public class Account {
     private int opening_balance;
     private int id;
     private String pendingAccount;
+    private String pendingTransferIn;
+    private int pendingTransferAmount;
 
     public Account() {
 
     }
-
-    public Account(int account_number, int balance, int opening_balance, int id, String pendingAccount) {
+    public Account(int account_number, int balance, int opening_balance, int id, String pendingAccount, String pendingTransferIn, int pendingTransferAmount) {
         this.account_number = account_number;
         this.balance = balance;
         this.opening_balance = opening_balance;
         this.id = id;
         this.pendingAccount = pendingAccount;
+        this.pendingTransferIn = pendingTransferIn;
+        this.pendingTransferAmount = pendingTransferAmount;
     }
 
     public Account(int balance) {
     }
+
+    public String getPendingTransferIn() {
+        return pendingTransferIn;
+    }
+
+    public void setPendingTransferIn(String pendingTransferIn) {
+        this.pendingTransferIn = pendingTransferIn;
+    }
+
+    public int getPendingTransferAmount() {
+        return pendingTransferAmount;
+    }
+
+    public void setPendingTransferAmount(int pendingTransferAmount) {
+        this.pendingTransferAmount = pendingTransferAmount;
+    }
+
+
 
     public int getAccount_number() {
         return account_number;
@@ -58,7 +79,7 @@ public class Account {
 
     @Override
     public String toString() {
-        return "Account { Account Number: " + account_number + ", Balance: " + balance + ", Pending: " + pendingAccount + " }";
+        return "Account { Account Number: " + account_number + ", Balance: " + balance + ", Pending accounts: " + pendingAccount + ", Pending transfer in: " + pendingTransferAmount + " }";
     }
 
 
